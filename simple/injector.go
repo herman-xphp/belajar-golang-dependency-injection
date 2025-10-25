@@ -1,6 +1,5 @@
 //go:build wireinject
 // +build wireinject
-
 package simple
 
 import "github.com/google/wire"
@@ -18,5 +17,15 @@ func InitializedDatabaseRepository() *DatabaseRepository {
 		NewDatabaseMongoDB,
 		NewDatabaseRepository,
 	)
-	return nil 
+	return nil
 }
+
+var fooSet = wire.NewSet(NewFooRepository, NewFooService)
+
+var barSet = wire.NewSet(NewBarRepository, NewBarService)
+
+func InitializedFooBarService() *FooBarService {
+	wire.Build(fooSet, barSet, NewFooBarService)
+	return nil
+}
+
