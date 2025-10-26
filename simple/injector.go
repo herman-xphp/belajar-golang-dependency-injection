@@ -1,5 +1,6 @@
 //go:build wireinject
 // +build wireinject
+
 package simple
 
 import "github.com/google/wire"
@@ -36,11 +37,16 @@ func InitializedFooBarService() *FooBarService {
 // }
 
 var helloSet = wire.NewSet(
-	NewSayHelloImpl, 
+	NewSayHelloImpl,
 	wire.Bind(new(SayHello), new(*SayHelloImp)),
 )
 
 func InitializedHelloService() *HelloService {
 	wire.Build(helloSet, NewHelloService)
+	return nil
+}
+
+func InitializedFooBar() *FooBar {
+	wire.Build(NewFoo, NewBar, wire.Struct(new(FooBar), "*"))
 	return nil
 }
